@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*read_file(int fd, char *str)
 {
@@ -93,15 +93,15 @@ static char	*update_line(char *str)
 
 char	*get_next_line(int fd)
 {
-	static char	*str;
+	static char	*str[1024];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	str = read_file(fd, str);
-	if(!str)
-		return(NULL);
-	line = get_line(str);
-	str = update_line(str);
+	str[fd] = read_file(fd, str[fd]);
+	if(!str[fd])
+        return(NULL);
+	line = get_line(str[fd]);
+	str[fd] = update_line(str[fd]);
 	return (line);
 }
